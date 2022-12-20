@@ -1,10 +1,29 @@
 import { load, parse } from "opentype.js";
 
-import { useEffect, useRef } from "react";
-import { font } from "../types/font_types";
+import { useEffect, useRef, useState } from "react";
+import { file } from "../types";
 
-const FontViewer = (props: { font: font }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const FontViewer = (props: { font: file }) => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasCtxRef = useRef<CanvasRenderingContext2D | null>(null);
+
+  const [temp, setTemp] = useState("");
+
+  useEffect(() => {
+    const displayFont = async () => {
+      if (canvasRef.current) {
+        canvasCtxRef.current = canvasRef.current.getContext("2d");
+
+        let ctx = canvasCtxRef.current;
+        ctx!.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        const font = await getFont(props.font.blob);
+        font.draw(canvasCtxRef.current!, props.font.name, 0, 45, 62, {
+          kerning: true,
+        });
+      }
+    };
+    displayFont();
+  }, [props.font.blob, props.font.name]);
 
   const getFont = async (font: Blob) => {
     const font_array_buffer = await new Response(font).arrayBuffer();
@@ -13,31 +32,6 @@ const FontViewer = (props: { font: font }) => {
 
     return font_data;
   };
-
-  const canvas = canvasRef.current;
-
-  const canvas_function = async () => {
-    if (canvas) {
-      const context = canvas.getContext("2d");
-      if (context) {
-        context.clearRect(0, 0, canvas.width, canvas.height);
-
-        const font = await getFont(props.font.blob);
-        font.draw(context, props.font.name, 0, 45, 62, {
-          kerning: true,
-        });
-      }
-    }
-    enableHighDPICanvas();
-  };
-
-  canvas_function();
-
-  // useEffect(() => {
-
-  //   canvas_function();
-  //   //Our first draw
-  // }, []);
 
   function enableHighDPICanvas() {
     console.log("enabled");
@@ -73,7 +67,7 @@ const FontViewer = (props: { font: font }) => {
       <canvas
         id="canvas"
         width="500"
-        height="50"
+        height="75"
         ref={canvasRef}
         style={{
           backgroundColor: "white",

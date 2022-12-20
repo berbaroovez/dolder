@@ -3,14 +3,14 @@ import { useState } from "react";
 import FontViewer from "../../components/fontviewer";
 import { supabase } from "../../tools/supabase";
 import { useAuth } from "../../tools/useAuth";
-import { font } from "../../types/font_types";
+import { file } from "../../types";
 import LoginForm from "../../components/LoginForm";
 import { getFiles } from "../../tools/services";
 const Home: NextPage = () => {
   const { user, signIn } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const [fonts, setFonts] = useState<font[]>([]);
+  const [fonts, setFonts] = useState<file[]>([]);
 
   const getBucket = async () => {
     if (user) {
