@@ -4,7 +4,7 @@ import FontViewer from "../../components/fontviewer";
 import { supabase } from "../../tools/supabase";
 import { useAuth } from "../../tools/useAuth";
 import { file } from "../../types";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../components/Shared/LoginForm";
 import { getFiles } from "../../tools/services";
 const Home: NextPage = () => {
   const { user, signIn } = useAuth();

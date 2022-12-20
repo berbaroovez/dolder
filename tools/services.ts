@@ -104,12 +104,12 @@ const whatTypeOfFile = (fileName: string) => {
 };
 
 const addCourse = async (course: Course) => {
-  await supabase.from<definitions["courses"]>("courses").insert(course);
+  await supabase.from("courses").insert(course);
 };
 
 const getCourses = async () => {
   const { data, error } = await supabase
-    .from<definitions["courses"]>("courses")
+    .from("courses")
     .select("*");
 
   return data;
