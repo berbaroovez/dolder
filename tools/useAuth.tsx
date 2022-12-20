@@ -27,7 +27,7 @@ const useProvideAuth = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const signIn = async (email: string) => {
-    const { user, error } = await supabase.auth.signIn({
+    const { data, error } = await supabase.auth.signInWithOtp({
       email,
     });
 
@@ -35,8 +35,10 @@ const useProvideAuth = () => {
       console.log(error);
     }
 
-    if (user) {
-      setUser(user);
+    if (data) {
+      if (data.user) {
+        setUser(user);
+      }
     }
   };
 
@@ -48,12 +50,15 @@ const useProvideAuth = () => {
   };
 
   useEffect(() => {
-    // get session data if there is an active session
-    const session = supabase.auth.session();
+    const getSessionInfo = async () => {
+      // get session data if there is an active session
+      const { data, error } = await supabase.auth.getSession();
 
-    setUser(session?.user ?? null);
-    // setLoading(false);
+      setUser(data.session?.user ?? null);
+      // setLoading(false);
+    };
 
+    getSessionInfo();
     // listen for changes to auth
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event, session) => {
@@ -64,7 +69,7 @@ const useProvideAuth = () => {
 
     // cleanup the useEffect hook
     return () => {
-      listener?.unsubscribe();
+      listener?.subscription.unsubscribe();
     };
   }, []);
 

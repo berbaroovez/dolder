@@ -4,12 +4,14 @@ import FileExplorer from "../components/FileExplorer";
 import FileUploaded from "../components/FileUploader";
 import { getCourses, getFiles } from "../tools/services";
 import { useAuth } from "../tools/useAuth";
-import { Course, file } from "../types/";
+import { file } from "../types/";
+import { Database } from "../lib/database.types";
 
+type Course = Database["public"]["Tables"]["courses"]["Row"];
 const Dashboard = () => {
   const { user, signIn } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [courses, setCourses] = useState<Course[]>();
+  const [courses, setCourses] = useState<Course[] | null>(null);
   const [fonts, setFonts] = useState<file[]>([]);
 
   useEffect(() => {
@@ -37,7 +39,9 @@ const Dashboard = () => {
   return (
     <div>
       {/* {fonts && <FileExplorer files={fonts} />} */}
-      <CourseForm />
+      <div className="w-96">
+        <CourseForm />
+      </div>
       {courses &&
         courses.map((course) => {
           return (
