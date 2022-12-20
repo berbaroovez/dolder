@@ -1,6 +1,7 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import LoginForm from "../components/LoginForm";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -15,6 +16,7 @@ const Home: NextPage = () => {
       <h1 className="text-teal-600 font-bold text-3xl">
         track and store your digital goods
       </h1>
+      <LoginForm />
     </div>
   );
 };
