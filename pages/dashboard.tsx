@@ -6,6 +6,16 @@ import { getCourses, getFiles } from "../tools/services";
 import { useAuth } from "../tools/useAuth";
 import { file } from "../types/";
 import { Database } from "../lib/database.types";
+import Card from "../components/CourseCard";
+import FileExplorerTable from "../components/TestTable";
+import InfoBar from "../components/Shared/InfoBar";
+
+interface File {
+  name: string;
+  date: string;
+  type: string;
+  size: string | number;
+}
 
 type Course = Database["public"]["Tables"]["courses"]["Row"];
 const Dashboard = () => {
@@ -13,7 +23,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [courses, setCourses] = useState<Course[] | null>(null);
   const [fonts, setFonts] = useState<file[]>([]);
-
+  const [files, setFiles] = useState<File[]>([]);
   useEffect(() => {
     console.log("Send");
     const getBucket = async () => {
@@ -26,6 +36,16 @@ const Dashboard = () => {
 
         const courseList = await getCourses();
         setCourses(courseList);
+
+        const files = response.map((file) => {
+          return {
+            name: file.name,
+            date: file.created_at,
+            type: file.type,
+            size: "200mb",
+          };
+        });
+        setFiles(files);
       }
     };
 
@@ -37,25 +57,21 @@ const Dashboard = () => {
   //   }, [fonts]);
 
   return (
-    <div>
+    <div className="grid">
       {/* {fonts && <FileExplorer files={fonts} />} */}
-      <div className="w-96">
+      {/* <div className="w-96">
         <CourseForm />
+      </div> */}
+      <div className="flex  flex-wrap gap-4 w-3/4">
+        {courses &&
+          courses.map((course) => {
+            return <Card course={course} />;
+          })}
       </div>
-      {courses &&
-        courses.map((course) => {
-          return (
-            <div key={course.id}>
-              <img
-                src={`https://www.google.com/s2/favicons?domain=${
-                  course.url
-                }&sz=${64}`}
-              />
-              <a href={course.url}>{course.url}</a>
-            </div>
-          );
-        })}
       {/* <FileUploaded /> */}
+
+      {/* <FileExplorerTable files={files} /> */}
+      <InfoBar />
     </div>
   );
 };
