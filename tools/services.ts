@@ -1,5 +1,6 @@
-import { Course, file } from "../types";
-import { definitions } from "../types/supabase";
+import { file } from "../types";
+import { Course } from "../types/supabase";
+
 import { supabase } from "./supabase";
 
 const getFiles = async (user_id: string) => {
@@ -14,7 +15,7 @@ const getFiles = async (user_id: string) => {
     });
 
   if (data) {
-    console.log("Data", data);
+    // console.log("Data", data);
     for (let i = 0; i < data.length; i++) {
       const fontName = data[i].name;
       // if (
@@ -25,10 +26,10 @@ const getFiles = async (user_id: string) => {
       const { data: font_data, error } = await supabase.storage
         .from("junkpile")
         .download(`${user_id}/${fontName}`);
-      console.log("Font DAta", font_data);
+      // console.log("Font DAta", font_data);
 
       if (font_data) {
-        console.log(font_data);
+        // console.log(font_data);
         const fontNameMinuesExtenstion = fontName.split(".")[0];
         const fontExtension = fontName.split(".")[1];
         const fileType = whatTypeOfFile(fontName);
@@ -58,7 +59,7 @@ const getFile = async (id: string) => {
     });
 
   if (data) {
-    console.log("Data", data);
+    // console.log("Data", data);
     for (let i = 0; i < data.length; i++) {
       const fontName = data[i].name;
       // if (
@@ -69,7 +70,7 @@ const getFile = async (id: string) => {
       const { data: font_data, error } = await supabase.storage
         .from("junkpile")
         .download(`13253fd6-664b-4036-82a7-07b3aa634995/${fontName}`);
-      console.log("Font DAta", font_data);
+      // console.log("Font DAta", font_data);
 
       if (font_data) {
         console.log(font_data);
@@ -104,13 +105,19 @@ const whatTypeOfFile = (fileName: string) => {
 };
 
 const addCourse = async (course: Course) => {
-  await supabase.from<definitions["courses"]>("courses").insert(course);
+  const { data, error }  = await supabase.from("courses").insert(course);
+
+  console.log(data)
+  console.log(error)
+
 };
 
 const getCourses = async () => {
   const { data, error } = await supabase
-    .from<definitions["courses"]>("courses")
+    .from("courses")
     .select("*");
+
+
 
   return data;
 };
