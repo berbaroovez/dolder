@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { useEffect } from "react";
 import { useAuth } from "../../tools/useAuth";
+import ThemeToggler from "./ThemeToggler";
 
 const NavBar = () => {
   const { user, signIn, signOut } = useAuth();
@@ -29,11 +31,14 @@ const NavBar = () => {
      */}
       {user ? (
         <div className="flex items-center">
-          <span className="mr-4">{user.email}</span>
+          <ThemeToggler />
+          <span className="mr-4 bg-slate-500 hover:bg-slate-600 cursor-pointer text-white font-bold py-1 px-2 rounded">
+            <Link href="/dashboard">Dashboard</Link>
+          </span>
           {/* a svg icon of a human leaving a door */}
 
           <button
-            className="bg-red-500 hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+            className="bg-red-500 hover:bg-red-600 text-white font-bold ppy-1 px-2 rounded"
             onClick={() => {
               signOut();
             }}
