@@ -9,6 +9,7 @@ import { Database } from "../lib/database.types";
 import Card from "../components/CourseCard";
 import FileExplorerTable from "../components/TestTable";
 import InfoBar from "../components/Shared/InfoBar";
+import { Course } from "../types/supabase";
 
 interface File {
   name: string;
@@ -17,7 +18,6 @@ interface File {
   size: string | number;
 }
 
-type Course = Database["public"]["Tables"]["courses"]["Row"];
 const Dashboard = () => {
   const { user, signIn } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -59,13 +59,13 @@ const Dashboard = () => {
   return (
     <div className="grid">
       {/* {fonts && <FileExplorer files={fonts} />} */}
-      {/* <div className="w-96">
+      <div className="w-96">
         <CourseForm />
-      </div> */}
+      </div>
       <div className="flex  flex-wrap gap-4 w-3/4">
         {courses &&
           courses.map((course) => {
-            return <Card course={course} />;
+            return <Card course={course} key={course.id} />;
           })}
       </div>
       {/* <FileUploaded /> */}

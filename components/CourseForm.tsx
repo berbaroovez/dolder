@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { FormEvent, useState } from "react";
 import { addCourse } from "../tools/services";
-import { Course } from "../types";
-import { definitions } from "../types/supabase";
+import { Course } from "../types/supabase";
 
 const CourseForm = () => {
   const [url, setUrl] = useState("");
@@ -10,9 +9,13 @@ const CourseForm = () => {
   const [price, setPrice] = useState(0);
   const [purchasedDate, setPurchasedDate] = useState(new Date().toString());
   const [submitted, setSubmitted] = useState(false);
+  const [notes, setNotes] = useState("");
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+
+    //ignoring the id because it is auto generated
+    //@ts-ignore
     const newCourse: Course = {
       url,
       paid,
@@ -20,6 +23,9 @@ const CourseForm = () => {
       purchased_on: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       created_at: new Date().toISOString(),
+      completed: false,
+      note: notes,
+      favorite: false,
     };
 
     await addCourse(newCourse);
@@ -110,6 +116,25 @@ const CourseForm = () => {
           />
         </div>
       </div>
+      <div>
+        <label
+          htmlFor="notes"
+          className="block text-grey-darker text-sm font-bold mb-1"
+        >
+          Notes
+        </label>
+
+        <textarea
+          id="notes"
+          name="notes"
+          className="shadow  border rounded  py-2 px-3 text-grey-darker w-full"
+          onChange={(e) => {
+            setNotes(e.target.value);
+          }}
+          value={notes}
+        />
+      </div>
+
       <button
         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex w-full justify-center items-center gap-4"
         type="submit"
