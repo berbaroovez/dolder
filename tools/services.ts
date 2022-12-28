@@ -112,10 +112,10 @@ const addCourse = async (course: Course) => {
 
 };
 
-const getCourses = async () => {
+const getCourses = async (id:string) => {
   const { data, error } = await supabase
     .from("courses")
-    .select("*");
+    .select("*").eq("user", id);
 
 
 
