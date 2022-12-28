@@ -9,14 +9,14 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ course }) => {
   const dispatch = useDispatch();
-
+  //test 12
   const handleSelect = () => {
     dispatch(setSelectedFile(course));
   };
 
   return (
     <div
-      className="relative rounded-md shadow-sm w-96 cursor-pointer hover:shadow-lg hover:transform hover:scale-105 transition duration-500 ease-in-out"
+      className="relative rounded-lg shadow-sm cursor-pointer hover:shadow-lg hover:transform hover:scale-105 transition duration-500 ease-in-out "
       onClick={handleSelect}
     >
       {/* <a href={url} className="block overflow-hidden"> */}

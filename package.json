@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@supabase/supabase-js": "^2.2.1",
     "@types/opentype": "^0.0.4",

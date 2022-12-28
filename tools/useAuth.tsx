@@ -47,6 +47,8 @@ const useProvideAuth = () => {
     if (error) {
       console.log(error);
     }
+    setUser(null);
+    window.location.href = "/";
   };
 
   useEffect(() => {
